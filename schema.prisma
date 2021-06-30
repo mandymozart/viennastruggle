@@ -24,12 +24,7 @@ model Project {
   id                         String   @id @default(cuid())
   title                      String?
   slug                       String?
-  image_filesize             Int?
-  image_extension            String?
-  image_width                Int?
-  image_height               Int?
-  image_mode                 String?
-  image_id                   String?
+  image                      String?
   video                      String?
   projectId                  String?  @unique
   description                String?
@@ -77,12 +72,8 @@ model Session {
   id                   String   @id @default(cuid())
   title                String?
   description          String?
-  image_filesize       Int?
-  image_extension      String?
-  image_width          Int?
-  image_height         Int?
-  image_mode           String?
-  image_id             String?
+  slug                 String?
+  image                String?
   owner                Person?  @relation("Session_owner", fields: [ownerId], references: [id])
   ownerId              String?  @map("owner")
   inviteOnly           Boolean?

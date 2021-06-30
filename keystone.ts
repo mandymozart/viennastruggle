@@ -65,6 +65,7 @@ const lists = createSchema({
     fields: {
       title: text({isRequired: true}),
       description: text(),
+      slug: text({ isRequired: true}),
       image: text(),
       owner: relationship({ ref: 'Person', many: false}),
       inviteOnly: checkbox({ defaultValue: false}),

@@ -106,7 +106,7 @@ type Project {
   id: ID!
   title: String
   slug: String
-  image: ImageFieldOutput
+  image: String
   video: String
   projectId: String
   description: String
@@ -182,23 +182,6 @@ type Project {
   applicantsCount(where: PersonWhereInput! = {}): Int
 }
 
-interface ImageFieldOutput {
-  id: ID!
-  filesize: Int!
-  width: Int!
-  height: Int!
-  extension: ImageExtension!
-  ref: String!
-  src: String!
-}
-
-enum ImageExtension {
-  jpg
-  png
-  webp
-  gif
-}
-
 enum ProjectPriorityType {
   low
   medium
@@ -238,6 +221,12 @@ input ProjectWhereInput {
   slug_not_contains: String
   slug_in: [String]
   slug_not_in: [String]
+  image: String
+  image_not: String
+  image_contains: String
+  image_not_contains: String
+  image_in: [String]
+  image_not_in: [String]
   video: String
   video_not: String
   video_contains: String
@@ -331,6 +320,8 @@ enum SortProjectsBy {
   title_DESC
   slug_ASC
   slug_DESC
+  image_ASC
+  image_DESC
   video_ASC
   video_DESC
   projectId_ASC
@@ -349,6 +340,7 @@ input ProjectOrderByInput {
   id: OrderDirection
   title: OrderDirection
   slug: OrderDirection
+  image: OrderDirection
   video: OrderDirection
   projectId: OrderDirection
   description: OrderDirection
@@ -360,7 +352,7 @@ input ProjectOrderByInput {
 input ProjectUpdateInput {
   title: String
   slug: String
-  image: ImageFieldInput
+  image: String
   video: String
   projectId: String
   description: String
@@ -372,16 +364,6 @@ input ProjectUpdateInput {
   collaborators: PersonRelateToManyInput
   applicants: PersonRelateToManyInput
 }
-
-input ImageFieldInput {
-  upload: Upload
-  ref: String
-}
-
-"""
-The `Upload` scalar type represents a file upload.
-"""
-scalar Upload
 
 input PersonRelateToManyInput {
   create: [PersonCreateInput]
@@ -398,7 +380,7 @@ input ProjectsUpdateInput {
 input ProjectCreateInput {
   title: String
   slug: String
-  image: ImageFieldInput
+  image: String
   video: String
   projectId: String
   description: String
@@ -803,7 +785,8 @@ type Session {
   id: ID!
   title: String
   description: String
-  image: ImageFieldOutput
+  slug: String
+  image: String
   owner: Person
   inviteOnly: Boolean
   invited(
@@ -830,16 +813,6 @@ type Session {
   invitedCount(where: PersonWhereInput! = {}): Int
 }
 
-type LocalImageFieldOutput implements ImageFieldOutput {
-  id: ID!
-  filesize: Int!
-  width: Int!
-  height: Int!
-  extension: ImageExtension!
-  ref: String!
-  src: String!
-}
-
 input SessionWhereInput {
   AND: [SessionWhereInput!]
   OR: [SessionWhereInput!]
@@ -863,6 +836,18 @@ input SessionWhereInput {
   description_not_contains: String
   description_in: [String]
   description_not_in: [String]
+  slug: String
+  slug_not: String
+  slug_contains: String
+  slug_not_contains: String
+  slug_in: [String]
+  slug_not_in: [String]
+  image: String
+  image_not: String
+  image_contains: String
+  image_not_contains: String
+  image_in: [String]
+  image_not_in: [String]
   owner: PersonWhereInput
   owner_is_null: Boolean
   inviteOnly: Boolean
@@ -895,6 +880,10 @@ enum SortSessionsBy {
   title_DESC
   description_ASC
   description_DESC
+  slug_ASC
+  slug_DESC
+  image_ASC
+  image_DESC
   inviteOnly_ASC
   inviteOnly_DESC
 }
@@ -903,13 +892,16 @@ input SessionOrderByInput {
   id: OrderDirection
   title: OrderDirection
   description: OrderDirection
+  slug: OrderDirection
+  image: OrderDirection
   inviteOnly: OrderDirection
 }
 
 input SessionUpdateInput {
   title: String
   description: String
-  image: ImageFieldInput
+  slug: String
+  image: String
   owner: PersonRelateToOneInput
   inviteOnly: Boolean
   invited: PersonRelateToManyInput
@@ -923,7 +915,8 @@ input SessionsUpdateInput {
 input SessionCreateInput {
   title: String
   description: String
-  image: ImageFieldInput
+  slug: String
+  image: String
   owner: PersonRelateToOneInput
   inviteOnly: Boolean
   invited: PersonRelateToManyInput
