@@ -511,6 +511,24 @@
     fast-deep-equal "^3.1.3"
     graphql "^15.5.1"
 
+"@keystone-next/cloudinary@^6.0.3":
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@keystone-next/cloudinary/-/cloudinary-6.0.3.tgz#6ee0f02e3cc3d7b7dee0a0c36dac249b11ac4ee8"
+  integrity sha512-48x0jqdeKBWovQ4xbKGhnP9Dr3Nbiqb3T/QjAl02eujt6oKBFBFfvWhCBdeldsKkMg+Hom7cRvJP6AstECdemw==
+  dependencies:
+    "@babel/runtime" "^7.14.6"
+    "@keystone-next/fields" "^11.0.3"
+    "@keystone-next/types" "^21.0.1"
+    "@keystone-ui/button" "^5.0.0"
+    "@keystone-ui/core" "^3.1.0"
+    "@keystone-ui/fields" "^4.1.2"
+    "@keystone-ui/pill" "^5.0.0"
+    "@types/react" "^17.0.11"
+    cloudinary "^1.26.1"
+    cuid "^2.1.8"
+    graphql-upload "^12.0.0"
+    react "^17.0.2"
+
 "@keystone-next/fields@^11.0.3":
   version "11.0.3"
   resolved "https://registry.yarnpkg.com/@keystone-next/fields/-/fields-11.0.3.tgz#56d1730087e3b5545bffcbc082267e8788af207e"
@@ -2409,6 +2427,21 @@ clipboard-copy@^4.0.1:
   resolved "https://registry.yarnpkg.com/clipboard-copy/-/clipboard-copy-4.0.1.tgz#326ef9726d4ffe72d9a82a7bbe19379de692017d"
   integrity sha512-wOlqdqziE/NNTUJsfSgXmBMIrYmfd5V0HCGsR8uAKHcg+h9NENWINcfRjtWGU77wDHC8B8ijV4hMTGYbrKovng==
 
+cloudinary-core@^2.10.2:
+  version "2.11.4"
+  resolved "https://registry.yarnpkg.com/cloudinary-core/-/cloudinary-core-2.11.4.tgz#1d191935bcdcd412d499a91b928a94b266fee49d"
+  integrity sha512-F1BZczD6f5mB73D0c8gl/iuacVQQO+UhckNZxeeS9ZIVeIHbsfqwWiAZMQmIvEb7Wti/9MLU0xVwaWOak2THHA==
+
+cloudinary@^1.26.1:
+  version "1.26.1"
+  resolved "https://registry.yarnpkg.com/cloudinary/-/cloudinary-1.26.1.tgz#072282c12659faccd1983e4bd8d03bfc65cc23be"
+  integrity sha512-MiJFB7kVgd28/DDcIXmvcMm1wg/twMlynFELFF/7ZmgOPmUjjHUdI2f61KXA0yMGzMk0EUI9mqhGpruHjd2ybA==
+  dependencies:
+    cloudinary-core "^2.10.2"
+    core-js "3.6.5"
+    lodash "^4.17.11"
+    q "^1.5.1"
+
 color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
@@ -2532,6 +2565,11 @@ core-js-pure@^3.10.2, core-js-pure@^3.15.0:
   version "3.15.2"
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.15.2.tgz#c8e0874822705f3385d3197af9348f7c9ae2e3ce"
   integrity sha512-D42L7RYh1J2grW8ttxoY1+17Y4wXZeKe7uyplAI3FkNQyI5OgBIAjUfFiTPfL1rs0qLpxaabITNbjKl1Sp82tA==
+
+core-js@3.6.5:
+  version "3.6.5"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.5.tgz#7395dc273af37fb2e50e9bd3d9fe841285231d1a"
+  integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
 
 core-util-is@~1.0.0:
   version "1.0.2"
@@ -4388,7 +4426,7 @@ lodash.union@^4.6.0:
   resolved "https://registry.yarnpkg.com/lodash.union/-/lodash.union-4.6.0.tgz#48bb5088409f16f1821666641c44dd1aaae3cd88"
   integrity sha1-SLtQiECfFvGCFmZkHETdGqrjzYg=
 
-lodash@^4.17.13:
+lodash@^4.17.11, lodash@^4.17.13:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -5358,6 +5396,11 @@ punycode@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
+
+q@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
+  integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
 qs@6.7.0:
   version "6.7.0"

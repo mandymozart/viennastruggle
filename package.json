@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@keystone-next/cloudinary": "^6.0.3",
     "@keystone-next/fields": "^11.0.3",
     "@keystone-next/keystone": "^21.0.2",
     "next": "11.0.1",

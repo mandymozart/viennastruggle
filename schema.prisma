@@ -8,9 +8,86 @@ generator client {
   output   = "node_modules/.prisma/client"
 }
 
+model Activity {
+  id                     String    @id @default(cuid())
+  hours                  Float?
+  isConfirmed            Boolean?
+  assignedTo             Person?   @relation("Activity_assignedTo", fields: [assignedToId], references: [id])
+  assignedToId           String?   @map("assignedTo")
+  finishBy               DateTime?
+  from_Person_activities Person[]  @relation("Person_activities_many")
+
+  @@index([assignedToId])
+}
+
 model Project {
-  id      String  @id @default(cuid())
-  title   String?
-  slug    String?
-  content String?
+  id                         String   @id @default(cuid())
+  title                      String?
+  slug                       String?
+  image_filesize             Int?
+  image_extension            String?
+  image_width                Int?
+  image_height               Int?
+  image_mode                 String?
+  image_id                   String?
+  video                      String?
+  projectId                  String?  @unique
+  description                String?
+  tags                       String?
+  priority                   String?
+  status                     String?
+  leads                      Person?  @relation("Project_leads", fields: [leadsId], references: [id])
+  leadsId                    String?  @map("leads")
+  owner                      Person[] @relation("Project_owner_many")
+  collaborators              Person[] @relation("Project_collaborators_many")
+  applicants                 Person[] @relation("Project_applicants_many")
+  from_Person_applications   Person[] @relation("Person_applications_many")
+  from_Person_collaborations Person[] @relation("Person_collaborations_many")
+
+  @@index([leadsId])
+}
+
+model Person {
+  id                         String     @id @default(cuid())
+  name                       String?
+  alias                      String?
+  auth0Id                    String?    @unique
+  roles                      Role[]     @relation("Person_roles_many")
+  activities                 Activity[] @relation("Person_activities_many")
+  applications               Project[]  @relation("Person_applications_many")
+  collaborations             Project[]  @relation("Person_collaborations_many")
+  sessions                   Session[]  @relation("Person_sessions_many")
+  from_Activity_assignedTo   Activity[] @relation("Activity_assignedTo")
+  from_Project_leads         Project[]  @relation("Project_leads")
+  from_Project_owner         Project[]  @relation("Project_owner_many")
+  from_Project_collaborators Project[]  @relation("Project_collaborators_many")
+  from_Project_applicants    Project[]  @relation("Project_applicants_many")
+  from_Session_owner         Session[]  @relation("Session_owner")
+  from_Session_invited       Session[]  @relation("Session_invited_many")
+}
+
+model Role {
+  id                String   @id @default(cuid())
+  name              String?  @unique
+  description       String?
+  from_Person_roles Person[] @relation("Person_roles_many")
+}
+
+model Session {
+  id                   String   @id @default(cuid())
+  title                String?
+  description          String?
+  image_filesize       Int?
+  image_extension      String?
+  image_width          Int?
+  image_height         Int?
+  image_mode           String?
+  image_id             String?
+  owner                Person?  @relation("Session_owner", fields: [ownerId], references: [id])
+  ownerId              String?  @map("owner")
+  inviteOnly           Boolean?
+  invited              Person[] @relation("Session_invited_many")
+  from_Person_sessions Person[] @relation("Person_sessions_many")
+
+  @@index([ownerId])
 }

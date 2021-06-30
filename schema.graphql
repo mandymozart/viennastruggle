@@ -1,11 +1,218 @@
 """
  A keystone list
 """
+type Activity {
+  id: ID!
+  hours: Float
+  isConfirmed: Boolean
+  assignedTo: Person
+  finishBy: String
+}
+
+input ActivityWhereInput {
+  AND: [ActivityWhereInput!]
+  OR: [ActivityWhereInput!]
+  id: ID
+  id_not: ID
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hours: Float
+  hours_not: Float
+  hours_lt: Float
+  hours_lte: Float
+  hours_gt: Float
+  hours_gte: Float
+  hours_in: [Float]
+  hours_not_in: [Float]
+  isConfirmed: Boolean
+  isConfirmed_not: Boolean
+  assignedTo: PersonWhereInput
+  assignedTo_is_null: Boolean
+  finishBy: String
+  finishBy_not: String
+  finishBy_lt: String
+  finishBy_lte: String
+  finishBy_gt: String
+  finishBy_gte: String
+  finishBy_in: [String]
+  finishBy_not_in: [String]
+}
+
+input ActivityWhereUniqueInput {
+  id: ID
+}
+
+enum SortActivitiesBy {
+  id_ASC
+  id_DESC
+  hours_ASC
+  hours_DESC
+  isConfirmed_ASC
+  isConfirmed_DESC
+  finishBy_ASC
+  finishBy_DESC
+}
+
+input ActivityOrderByInput {
+  id: OrderDirection
+  hours: OrderDirection
+  isConfirmed: OrderDirection
+  finishBy: OrderDirection
+}
+
+enum OrderDirection {
+  asc
+  desc
+}
+
+input ActivityUpdateInput {
+  hours: Float
+  isConfirmed: Boolean
+  assignedTo: PersonRelateToOneInput
+  finishBy: String
+}
+
+input PersonRelateToOneInput {
+  create: PersonCreateInput
+  connect: PersonWhereUniqueInput
+  disconnect: PersonWhereUniqueInput
+  disconnectAll: Boolean
+}
+
+input ActivitiesUpdateInput {
+  id: ID!
+  data: ActivityUpdateInput
+}
+
+input ActivityCreateInput {
+  hours: Float
+  isConfirmed: Boolean
+  assignedTo: PersonRelateToOneInput
+  finishBy: String
+}
+
+input ActivitiesCreateInput {
+  data: ActivityCreateInput
+}
+
+"""
+ A keystone list
+"""
 type Project {
   id: ID!
   title: String
   slug: String
-  content: String
+  image: ImageFieldOutput
+  video: String
+  projectId: String
+  description: String
+  tags: String
+  priority: ProjectPriorityType
+  status: ProjectStatusType
+  leads: Person
+  owner(
+    where: PersonWhereInput! = {}
+    search: String
+    sortBy: [SortPeopleBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [PersonOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Person!]
+  _ownerMeta(
+    where: PersonWhereInput! = {}
+    search: String
+    sortBy: [SortPeopleBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [PersonOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use ownerCount instead."
+    )
+  ownerCount(where: PersonWhereInput! = {}): Int
+  collaborators(
+    where: PersonWhereInput! = {}
+    search: String
+    sortBy: [SortPeopleBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [PersonOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Person!]
+  _collaboratorsMeta(
+    where: PersonWhereInput! = {}
+    search: String
+    sortBy: [SortPeopleBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [PersonOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use collaboratorsCount instead."
+    )
+  collaboratorsCount(where: PersonWhereInput! = {}): Int
+  applicants(
+    where: PersonWhereInput! = {}
+    search: String
+    sortBy: [SortPeopleBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [PersonOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Person!]
+  _applicantsMeta(
+    where: PersonWhereInput! = {}
+    search: String
+    sortBy: [SortPeopleBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [PersonOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use applicantsCount instead."
+    )
+  applicantsCount(where: PersonWhereInput! = {}): Int
+}
+
+interface ImageFieldOutput {
+  id: ID!
+  filesize: Int!
+  width: Int!
+  height: Int!
+  extension: ImageExtension!
+  ref: String!
+  src: String!
+}
+
+enum ImageExtension {
+  jpg
+  png
+  webp
+  gif
+}
+
+enum ProjectPriorityType {
+  low
+  medium
+  high
+}
+
+enum ProjectStatusType {
+  draft
+  opencall
+  done
+}
+
+type _QueryMeta {
+  count: Int
 }
 
 input ProjectWhereInput {
@@ -31,16 +238,90 @@ input ProjectWhereInput {
   slug_not_contains: String
   slug_in: [String]
   slug_not_in: [String]
-  content: String
-  content_not: String
-  content_contains: String
-  content_not_contains: String
-  content_in: [String]
-  content_not_in: [String]
+  video: String
+  video_not: String
+  video_contains: String
+  video_not_contains: String
+  video_in: [String]
+  video_not_in: [String]
+  projectId: String
+  projectId_not: String
+  projectId_contains: String
+  projectId_not_contains: String
+  projectId_in: [String]
+  projectId_not_in: [String]
+  description: String
+  description_not: String
+  description_contains: String
+  description_not_contains: String
+  description_in: [String]
+  description_not_in: [String]
+  tags: String
+  tags_not: String
+  tags_contains: String
+  tags_not_contains: String
+  tags_in: [String]
+  tags_not_in: [String]
+  priority: ProjectPriorityType
+  priority_not: ProjectPriorityType
+  priority_in: [ProjectPriorityType]
+  priority_not_in: [ProjectPriorityType]
+  status: ProjectStatusType
+  status_not: ProjectStatusType
+  status_in: [ProjectStatusType]
+  status_not_in: [ProjectStatusType]
+  leads: PersonWhereInput
+  leads_is_null: Boolean
+
+  """
+   condition must be true for all nodes
+  """
+  owner_every: PersonWhereInput
+
+  """
+   condition must be true for at least 1 node
+  """
+  owner_some: PersonWhereInput
+
+  """
+   condition must be false for all nodes
+  """
+  owner_none: PersonWhereInput
+
+  """
+   condition must be true for all nodes
+  """
+  collaborators_every: PersonWhereInput
+
+  """
+   condition must be true for at least 1 node
+  """
+  collaborators_some: PersonWhereInput
+
+  """
+   condition must be false for all nodes
+  """
+  collaborators_none: PersonWhereInput
+
+  """
+   condition must be true for all nodes
+  """
+  applicants_every: PersonWhereInput
+
+  """
+   condition must be true for at least 1 node
+  """
+  applicants_some: PersonWhereInput
+
+  """
+   condition must be false for all nodes
+  """
+  applicants_none: PersonWhereInput
 }
 
 input ProjectWhereUniqueInput {
   id: ID
+  projectId: String
 }
 
 enum SortProjectsBy {
@@ -50,26 +331,63 @@ enum SortProjectsBy {
   title_DESC
   slug_ASC
   slug_DESC
-  content_ASC
-  content_DESC
+  video_ASC
+  video_DESC
+  projectId_ASC
+  projectId_DESC
+  description_ASC
+  description_DESC
+  tags_ASC
+  tags_DESC
+  priority_ASC
+  priority_DESC
+  status_ASC
+  status_DESC
 }
 
 input ProjectOrderByInput {
   id: OrderDirection
   title: OrderDirection
   slug: OrderDirection
-  content: OrderDirection
-}
-
-enum OrderDirection {
-  asc
-  desc
+  video: OrderDirection
+  projectId: OrderDirection
+  description: OrderDirection
+  tags: OrderDirection
+  priority: OrderDirection
+  status: OrderDirection
 }
 
 input ProjectUpdateInput {
   title: String
   slug: String
-  content: String
+  image: ImageFieldInput
+  video: String
+  projectId: String
+  description: String
+  tags: String
+  priority: ProjectPriorityType
+  status: ProjectStatusType
+  leads: PersonRelateToOneInput
+  owner: PersonRelateToManyInput
+  collaborators: PersonRelateToManyInput
+  applicants: PersonRelateToManyInput
+}
+
+input ImageFieldInput {
+  upload: Upload
+  ref: String
+}
+
+"""
+The `Upload` scalar type represents a file upload.
+"""
+scalar Upload
+
+input PersonRelateToManyInput {
+  create: [PersonCreateInput]
+  connect: [PersonWhereUniqueInput]
+  disconnect: [PersonWhereUniqueInput]
+  disconnectAll: Boolean
 }
 
 input ProjectsUpdateInput {
@@ -80,11 +398,539 @@ input ProjectsUpdateInput {
 input ProjectCreateInput {
   title: String
   slug: String
-  content: String
+  image: ImageFieldInput
+  video: String
+  projectId: String
+  description: String
+  tags: String
+  priority: ProjectPriorityType
+  status: ProjectStatusType
+  leads: PersonRelateToOneInput
+  owner: PersonRelateToManyInput
+  collaborators: PersonRelateToManyInput
+  applicants: PersonRelateToManyInput
 }
 
 input ProjectsCreateInput {
   data: ProjectCreateInput
+}
+
+"""
+ A keystone list
+"""
+type Person {
+  id: ID!
+  name: String
+  alias: String
+  auth0Id: String
+  roles(
+    where: RoleWhereInput! = {}
+    search: String
+    sortBy: [SortRolesBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RoleOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Role!]
+  _rolesMeta(
+    where: RoleWhereInput! = {}
+    search: String
+    sortBy: [SortRolesBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RoleOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use rolesCount instead."
+    )
+  rolesCount(where: RoleWhereInput! = {}): Int
+  activities(
+    where: ActivityWhereInput! = {}
+    search: String
+    sortBy: [SortActivitiesBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ActivityOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Activity!]
+  _activitiesMeta(
+    where: ActivityWhereInput! = {}
+    search: String
+    sortBy: [SortActivitiesBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ActivityOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use activitiesCount instead."
+    )
+  activitiesCount(where: ActivityWhereInput! = {}): Int
+  applications(
+    where: ProjectWhereInput! = {}
+    search: String
+    sortBy: [SortProjectsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ProjectOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Project!]
+  _applicationsMeta(
+    where: ProjectWhereInput! = {}
+    search: String
+    sortBy: [SortProjectsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ProjectOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use applicationsCount instead."
+    )
+  applicationsCount(where: ProjectWhereInput! = {}): Int
+  collaborations(
+    where: ProjectWhereInput! = {}
+    search: String
+    sortBy: [SortProjectsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ProjectOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Project!]
+  _collaborationsMeta(
+    where: ProjectWhereInput! = {}
+    search: String
+    sortBy: [SortProjectsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ProjectOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use collaborationsCount instead."
+    )
+  collaborationsCount(where: ProjectWhereInput! = {}): Int
+  sessions(
+    where: SessionWhereInput! = {}
+    search: String
+    sortBy: [SortSessionsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [SessionOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Session!]
+  _sessionsMeta(
+    where: SessionWhereInput! = {}
+    search: String
+    sortBy: [SortSessionsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [SessionOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use sessionsCount instead."
+    )
+  sessionsCount(where: SessionWhereInput! = {}): Int
+}
+
+input PersonWhereInput {
+  AND: [PersonWhereInput!]
+  OR: [PersonWhereInput!]
+  id: ID
+  id_not: ID
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  name: String
+  name_not: String
+  name_contains: String
+  name_not_contains: String
+  name_in: [String]
+  name_not_in: [String]
+  alias: String
+  alias_not: String
+  alias_contains: String
+  alias_not_contains: String
+  alias_in: [String]
+  alias_not_in: [String]
+  auth0Id: String
+  auth0Id_not: String
+  auth0Id_contains: String
+  auth0Id_not_contains: String
+  auth0Id_in: [String]
+  auth0Id_not_in: [String]
+
+  """
+   condition must be true for all nodes
+  """
+  roles_every: RoleWhereInput
+
+  """
+   condition must be true for at least 1 node
+  """
+  roles_some: RoleWhereInput
+
+  """
+   condition must be false for all nodes
+  """
+  roles_none: RoleWhereInput
+
+  """
+   condition must be true for all nodes
+  """
+  activities_every: ActivityWhereInput
+
+  """
+   condition must be true for at least 1 node
+  """
+  activities_some: ActivityWhereInput
+
+  """
+   condition must be false for all nodes
+  """
+  activities_none: ActivityWhereInput
+
+  """
+   condition must be true for all nodes
+  """
+  applications_every: ProjectWhereInput
+
+  """
+   condition must be true for at least 1 node
+  """
+  applications_some: ProjectWhereInput
+
+  """
+   condition must be false for all nodes
+  """
+  applications_none: ProjectWhereInput
+
+  """
+   condition must be true for all nodes
+  """
+  collaborations_every: ProjectWhereInput
+
+  """
+   condition must be true for at least 1 node
+  """
+  collaborations_some: ProjectWhereInput
+
+  """
+   condition must be false for all nodes
+  """
+  collaborations_none: ProjectWhereInput
+
+  """
+   condition must be true for all nodes
+  """
+  sessions_every: SessionWhereInput
+
+  """
+   condition must be true for at least 1 node
+  """
+  sessions_some: SessionWhereInput
+
+  """
+   condition must be false for all nodes
+  """
+  sessions_none: SessionWhereInput
+}
+
+input PersonWhereUniqueInput {
+  id: ID
+  auth0Id: String
+}
+
+enum SortPeopleBy {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  alias_ASC
+  alias_DESC
+  auth0Id_ASC
+  auth0Id_DESC
+}
+
+input PersonOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  alias: OrderDirection
+  auth0Id: OrderDirection
+}
+
+input PersonUpdateInput {
+  name: String
+  alias: String
+  auth0Id: String
+  roles: RoleRelateToManyInput
+  activities: ActivityRelateToManyInput
+  applications: ProjectRelateToManyInput
+  collaborations: ProjectRelateToManyInput
+  sessions: SessionRelateToManyInput
+}
+
+input RoleRelateToManyInput {
+  create: [RoleCreateInput]
+  connect: [RoleWhereUniqueInput]
+  disconnect: [RoleWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+input ActivityRelateToManyInput {
+  create: [ActivityCreateInput]
+  connect: [ActivityWhereUniqueInput]
+  disconnect: [ActivityWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+input ProjectRelateToManyInput {
+  create: [ProjectCreateInput]
+  connect: [ProjectWhereUniqueInput]
+  disconnect: [ProjectWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+input SessionRelateToManyInput {
+  create: [SessionCreateInput]
+  connect: [SessionWhereUniqueInput]
+  disconnect: [SessionWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+input PeopleUpdateInput {
+  id: ID!
+  data: PersonUpdateInput
+}
+
+input PersonCreateInput {
+  name: String
+  alias: String
+  auth0Id: String
+  roles: RoleRelateToManyInput
+  activities: ActivityRelateToManyInput
+  applications: ProjectRelateToManyInput
+  collaborations: ProjectRelateToManyInput
+  sessions: SessionRelateToManyInput
+}
+
+input PeopleCreateInput {
+  data: PersonCreateInput
+}
+
+"""
+ A keystone list
+"""
+type Role {
+  id: ID!
+  name: String
+  description: String
+}
+
+input RoleWhereInput {
+  AND: [RoleWhereInput!]
+  OR: [RoleWhereInput!]
+  id: ID
+  id_not: ID
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  name: String
+  name_not: String
+  name_contains: String
+  name_not_contains: String
+  name_in: [String]
+  name_not_in: [String]
+  description: String
+  description_not: String
+  description_contains: String
+  description_not_contains: String
+  description_in: [String]
+  description_not_in: [String]
+}
+
+input RoleWhereUniqueInput {
+  id: ID
+  name: String
+}
+
+enum SortRolesBy {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+}
+
+input RoleOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  description: OrderDirection
+}
+
+input RoleUpdateInput {
+  name: String
+  description: String
+}
+
+input RolesUpdateInput {
+  id: ID!
+  data: RoleUpdateInput
+}
+
+input RoleCreateInput {
+  name: String
+  description: String
+}
+
+input RolesCreateInput {
+  data: RoleCreateInput
+}
+
+"""
+ A keystone list
+"""
+type Session {
+  id: ID!
+  title: String
+  description: String
+  image: ImageFieldOutput
+  owner: Person
+  inviteOnly: Boolean
+  invited(
+    where: PersonWhereInput! = {}
+    search: String
+    sortBy: [SortPeopleBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [PersonOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Person!]
+  _invitedMeta(
+    where: PersonWhereInput! = {}
+    search: String
+    sortBy: [SortPeopleBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [PersonOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use invitedCount instead."
+    )
+  invitedCount(where: PersonWhereInput! = {}): Int
+}
+
+type LocalImageFieldOutput implements ImageFieldOutput {
+  id: ID!
+  filesize: Int!
+  width: Int!
+  height: Int!
+  extension: ImageExtension!
+  ref: String!
+  src: String!
+}
+
+input SessionWhereInput {
+  AND: [SessionWhereInput!]
+  OR: [SessionWhereInput!]
+  id: ID
+  id_not: ID
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  title: String
+  title_not: String
+  title_contains: String
+  title_not_contains: String
+  title_in: [String]
+  title_not_in: [String]
+  description: String
+  description_not: String
+  description_contains: String
+  description_not_contains: String
+  description_in: [String]
+  description_not_in: [String]
+  owner: PersonWhereInput
+  owner_is_null: Boolean
+  inviteOnly: Boolean
+  inviteOnly_not: Boolean
+
+  """
+   condition must be true for all nodes
+  """
+  invited_every: PersonWhereInput
+
+  """
+   condition must be true for at least 1 node
+  """
+  invited_some: PersonWhereInput
+
+  """
+   condition must be false for all nodes
+  """
+  invited_none: PersonWhereInput
+}
+
+input SessionWhereUniqueInput {
+  id: ID
+}
+
+enum SortSessionsBy {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  description_ASC
+  description_DESC
+  inviteOnly_ASC
+  inviteOnly_DESC
+}
+
+input SessionOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  description: OrderDirection
+  inviteOnly: OrderDirection
+}
+
+input SessionUpdateInput {
+  title: String
+  description: String
+  image: ImageFieldInput
+  owner: PersonRelateToOneInput
+  inviteOnly: Boolean
+  invited: PersonRelateToManyInput
+}
+
+input SessionsUpdateInput {
+  id: ID!
+  data: SessionUpdateInput
+}
+
+input SessionCreateInput {
+  title: String
+  description: String
+  image: ImageFieldInput
+  owner: PersonRelateToOneInput
+  inviteOnly: Boolean
+  invited: PersonRelateToManyInput
+}
+
+input SessionsCreateInput {
+  data: SessionCreateInput
 }
 
 """
@@ -95,11 +941,37 @@ scalar JSON
     url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf"
   )
 
-type _QueryMeta {
-  count: Int
-}
-
 type Mutation {
+  """
+   Create a single Activity item.
+  """
+  createActivity(data: ActivityCreateInput): Activity
+
+  """
+   Create multiple Activity items.
+  """
+  createActivities(data: [ActivitiesCreateInput]): [Activity]
+
+  """
+   Update a single Activity item by ID.
+  """
+  updateActivity(id: ID!, data: ActivityUpdateInput): Activity
+
+  """
+   Update multiple Activity items by ID.
+  """
+  updateActivities(data: [ActivitiesUpdateInput]): [Activity]
+
+  """
+   Delete a single Activity item by ID.
+  """
+  deleteActivity(id: ID!): Activity
+
+  """
+   Delete multiple Activity items by ID.
+  """
+  deleteActivities(ids: [ID!]): [Activity]
+
   """
    Create a single Project item.
   """
@@ -129,9 +1001,134 @@ type Mutation {
    Delete multiple Project items by ID.
   """
   deleteProjects(ids: [ID!]): [Project]
+
+  """
+   Create a single Person item.
+  """
+  createPerson(data: PersonCreateInput): Person
+
+  """
+   Create multiple Person items.
+  """
+  createPeople(data: [PeopleCreateInput]): [Person]
+
+  """
+   Update a single Person item by ID.
+  """
+  updatePerson(id: ID!, data: PersonUpdateInput): Person
+
+  """
+   Update multiple Person items by ID.
+  """
+  updatePeople(data: [PeopleUpdateInput]): [Person]
+
+  """
+   Delete a single Person item by ID.
+  """
+  deletePerson(id: ID!): Person
+
+  """
+   Delete multiple Person items by ID.
+  """
+  deletePeople(ids: [ID!]): [Person]
+
+  """
+   Create a single Role item.
+  """
+  createRole(data: RoleCreateInput): Role
+
+  """
+   Create multiple Role items.
+  """
+  createRoles(data: [RolesCreateInput]): [Role]
+
+  """
+   Update a single Role item by ID.
+  """
+  updateRole(id: ID!, data: RoleUpdateInput): Role
+
+  """
+   Update multiple Role items by ID.
+  """
+  updateRoles(data: [RolesUpdateInput]): [Role]
+
+  """
+   Delete a single Role item by ID.
+  """
+  deleteRole(id: ID!): Role
+
+  """
+   Delete multiple Role items by ID.
+  """
+  deleteRoles(ids: [ID!]): [Role]
+
+  """
+   Create a single Session item.
+  """
+  createSession(data: SessionCreateInput): Session
+
+  """
+   Create multiple Session items.
+  """
+  createSessions(data: [SessionsCreateInput]): [Session]
+
+  """
+   Update a single Session item by ID.
+  """
+  updateSession(id: ID!, data: SessionUpdateInput): Session
+
+  """
+   Update multiple Session items by ID.
+  """
+  updateSessions(data: [SessionsUpdateInput]): [Session]
+
+  """
+   Delete a single Session item by ID.
+  """
+  deleteSession(id: ID!): Session
+
+  """
+   Delete multiple Session items by ID.
+  """
+  deleteSessions(ids: [ID!]): [Session]
 }
 
 type Query {
+  """
+   Search for all Activity items which match the where clause.
+  """
+  allActivities(
+    where: ActivityWhereInput! = {}
+    search: String
+    sortBy: [SortActivitiesBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ActivityOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Activity!]
+
+  """
+   Search for the Activity item with the matching ID.
+  """
+  Activity(where: ActivityWhereUniqueInput!): Activity
+
+  """
+   Perform a meta-query on all Activity items which match the where clause.
+  """
+  _allActivitiesMeta(
+    where: ActivityWhereInput! = {}
+    search: String
+    sortBy: [SortActivitiesBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ActivityOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use activitiesCount instead."
+    )
+  activitiesCount(where: ActivityWhereInput! = {}): Int
+
   """
    Search for all Project items which match the where clause.
   """
@@ -166,6 +1163,111 @@ type Query {
       reason: "This query will be removed in a future version. Please use projectsCount instead."
     )
   projectsCount(where: ProjectWhereInput! = {}): Int
+
+  """
+   Search for all Person items which match the where clause.
+  """
+  allPeople(
+    where: PersonWhereInput! = {}
+    search: String
+    sortBy: [SortPeopleBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [PersonOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Person!]
+
+  """
+   Search for the Person item with the matching ID.
+  """
+  Person(where: PersonWhereUniqueInput!): Person
+
+  """
+   Perform a meta-query on all Person items which match the where clause.
+  """
+  _allPeopleMeta(
+    where: PersonWhereInput! = {}
+    search: String
+    sortBy: [SortPeopleBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [PersonOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use peopleCount instead."
+    )
+  peopleCount(where: PersonWhereInput! = {}): Int
+
+  """
+   Search for all Role items which match the where clause.
+  """
+  allRoles(
+    where: RoleWhereInput! = {}
+    search: String
+    sortBy: [SortRolesBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RoleOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Role!]
+
+  """
+   Search for the Role item with the matching ID.
+  """
+  Role(where: RoleWhereUniqueInput!): Role
+
+  """
+   Perform a meta-query on all Role items which match the where clause.
+  """
+  _allRolesMeta(
+    where: RoleWhereInput! = {}
+    search: String
+    sortBy: [SortRolesBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RoleOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use rolesCount instead."
+    )
+  rolesCount(where: RoleWhereInput! = {}): Int
+
+  """
+   Search for all Session items which match the where clause.
+  """
+  allSessions(
+    where: SessionWhereInput! = {}
+    search: String
+    sortBy: [SortSessionsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [SessionOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Session!]
+
+  """
+   Search for the Session item with the matching ID.
+  """
+  Session(where: SessionWhereUniqueInput!): Session
+
+  """
+   Perform a meta-query on all Session items which match the where clause.
+  """
+  _allSessionsMeta(
+    where: SessionWhereInput! = {}
+    search: String
+    sortBy: [SortSessionsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [SessionOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use sessionsCount instead."
+    )
+  sessionsCount(where: SessionWhereInput! = {}): Int
   keystone: KeystoneMeta!
 }
 
